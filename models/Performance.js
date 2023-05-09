@@ -18,6 +18,6 @@ const performanceSchema = new mongoose.Schema({
   }]
 });
 performanceSchema.index({ _id: 1 });
-performanceSchema.date({ _id: 1 });
+performanceSchema.index({ date: 1 });
 
 module.exports = mongoose.model('Performance', performanceSchema);
