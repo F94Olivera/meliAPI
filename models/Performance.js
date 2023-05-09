@@ -6,7 +6,7 @@ const performanceSchema = new mongoose.Schema({
     ref: 'Show'
   },
   date: Date,
-  available_seats: [{
+  availableSeats: [{
     seat: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Venue.sections.seats'
