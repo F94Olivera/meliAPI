@@ -10,8 +10,8 @@ router.get(
     query('endDate').optional().isISO8601().toDate(),
     query('minPrice').optional().isInt({ min: 0 }).toInt(),
     query('maxPrice').optional().isInt({ min: 0 }).toInt(),
-    query('limit').optional().isInt({ min: 0 }).toInt(),
-    query('page').optional().isInt({ min: 0 }).toInt(),
+    query('limit').optional().isInt({ gt: 0 }).toInt(),
+    query('page').optional().isInt({ gt: 0 }).toInt(),
     query('sort').optional().isIn(['asc', 'desc'])
   ],
   showsController.getShows
@@ -22,8 +22,8 @@ router.get(
   [
     param('showId').isMongoId(),
     param('performanceId').isMongoId(),
-    query('limit').optional().isInt({ min: 0 }).toInt(),
-    query('page').optional().isInt({ min: 0 }).toInt(),
+    query('limit').optional().isInt({ gt: 0 }).toInt(),
+    query('page').optional().isInt({ gt: 0 }).toInt(),
     query('sort').optional().isIn(['asc', 'desc'])
   ],
   showsController.getSeats
