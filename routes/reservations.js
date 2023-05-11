@@ -4,7 +4,7 @@ const { body } = require('express-validator');
 const reservationController = require('../controllers/reservationController');
 
 router.post(
-  '/api/reservations',
+  '/',
   [
     body('showId').isMongoId(),
     body('performanceId').isMongoId(),
