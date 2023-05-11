@@ -2,16 +2,12 @@ const mongoose = require('mongoose');
 const Show = require('../models/Show');
 
 exports.getShows = async ({ startDate, endDate, minPrice, maxPrice, sort, page, limit }) => {
-  sort = sort || 'asc';
-  page = page ? parseInt(page, 10) : 1;
-  limit = limit ? parseInt(limit, 10) : 10;
+  page = parseInt(page, 10);
+  limit = parseInt(limit, 10);
   const skip = (page - 1) * limit;
 
   const match = {};
-  if (startDate || endDate) {
-    console.log('14');
-    match['performances.date'] = {};
-  }
+  if (startDate || endDate) match['performances.date'] = {};
   if (startDate) match['performances.date'].$gte = startDate;
   if (endDate) match['performances.date'].$lte = endDate;
   if (minPrice || maxPrice) match['venue.sections.seats.price'] = {};
@@ -94,11 +90,13 @@ exports.getShows = async ({ startDate, endDate, minPrice, maxPrice, sort, page, 
   }
 };
 
-exports.getSeats = async (showId, performanceId, page, limit) => {
+exports.getSeats = async ({ showId, performanceId, page, limit, sort }) => {
   try {
-    page = parseInt(page) || 1;
-    limit = parseInt(limit) || 10;
+    page = parseInt(page);
+    limit = parseInt(limit);
     const skip = (page - 1) * limit;
+    const sortOption = sort === 'asc' ? 1 : sort === 'desc' ? -1 : 0;
+    const sortStage = sortOption !== 0 ? { $sort: { 'venue.sections.seats.price': sortOption } } : {};
 
     const result = await Show.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(showId) } },
@@ -149,6 +147,7 @@ exports.getSeats = async (showId, performanceId, page, limit) => {
         }
       },
       { $match: { seat_performance: { $ne: [] } } },
+      sortStage,
       {
         $facet: {
           totalDocuments: [{ $count: 'total' }],
