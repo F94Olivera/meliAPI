@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  title: Meli API de Shows
+  version: 1.0.0
+paths:
+  /:
+    get:
+      summary: Verificar estado de la API
+      responses:
+        '200':
+          description: API running
+  /api/login:
+    post:
+      summary: Iniciar sesión
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Inicio de sesión exitoso
+        '401':
+          description: Credenciales inválidas
+  /api/shows:
+    get:
+      summary: Obtener shows
+      parameters:
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date
+          description: Fecha de inicio
+          example: YYYY-MM-DD
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date
+          description: Fecha de fin
+          example: YYYY-MM-DD
+        - in: query
+          name: minPrice
+          schema:
+            type: integer
+            minimum: 1
+          description: Precio mínimo
+          example: 1
+        - in: query
+          name: maxPrice
+          schema:
+            type: integer
+            minimum: 0
+          description: Precio máximo
+          example: 1000000
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+          description: Límite de resultados por página
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+          description: Página de resultados
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+          description: Orden de clasificación (ascendente o descendente)
+      responses:
+        '200':
+          description: Lista de shows
+  /api/shows/{showId}/performances/{performanceId}/seats:
+    get:
+      summary: Obtener asientos de una presentación
+      parameters:
+        - in: path
+          name: showId
+          schema:
+            type: string
+            format: objectId
+          description: ID del show
+          required: true
+        - in: path
+          name: performanceId
+          schema:
+            type: string
+            format: objectId
+          description: ID de la presentación
+          required: true
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+          description: Límite de resultados por página
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+          description: Página de resultados
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+          description: Orden de clasificación (ascendente o descendente)
+      responses:
+        '200':
+          description: Lista de asientos
+  /api/reservations:
+    post:
+      summary: Crear una reserva
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                showId:
+                  type: string
+                  format: objectId
+                performanceId:
+                  type: string
+                  format: objectId
+                customerDni:
+                  type: string
+                  minLength: 1
+                customerName:
+                  type: string
+                  minLength: 1
+                seats:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: object
+                    properties:
+                      sectionId:
+                        type: string
+                        minLength: 1
+                      seatId:
+                        type: string
+                        format: objectId
+      responses:
+        '200':
+          description: Reserva creada exitosamente
+        '400':
+          description: Error en los datos de entrada
