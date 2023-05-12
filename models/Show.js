@@ -13,4 +13,3 @@ const showSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Show', showSchema);
-mongoose.set({ debug: true });
