@@ -13,8 +13,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^29.5.0",
-    "mongodb-memory-server": "^8.12.2",
     "nodemon": "^2.0.22",
     "semistandard": "^16.0.1"
   },
