@@ -6,7 +6,7 @@ This API provides functionality for managing ticket reservation
 ### Notes
 - Based on the requirements I made the API multiuser based on roles making it so that the admin has access to all of the endpoints and the user can only POST to `/api/reservations`
 - There's a swagger file with examples
-
+- To run 1) change .env.sample for .env 2) go to terminal and type `npm run server` 
 
 ### Login and login credentials
 
